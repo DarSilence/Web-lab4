@@ -465,7 +465,6 @@ function getWeather(lat, long, index, cur_city) {
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                console.log(lat, long, data);
                 prepareWeatherData(data, index, cur_city);
             })
             .catch(error => {
@@ -487,7 +486,6 @@ function rememberWeather(lat, long, index, cur_city) {
 function updateAllCitiesWeather() {
     for (let index = 1; index <= globalThis.cities.length; index++) {
         const city = globalThis.cities[index - 1];
-        console.log(city);
         getWeather(city_coords[city].latitude, city_coords[city].longitude, index, city);
     }
 }
@@ -511,7 +509,6 @@ function success({ coords }) {
 }
 
 function error({ message }) {
-    console.log(message);
     if (message === "Timeout expired") {
         errorLabelTitle.textContent = "Определение геопозиции...";
         getGeolocation();
@@ -521,8 +518,10 @@ function error({ message }) {
         updateBlocks();
     } else {
         errorLabelTitle.textContent = "Невозможно получить данные о геолокации.";
+        findingGeo = false;
         geoDialog.close();
         handleGeolocationError();
+        updateBlocks();
     }
     globalThis.geoloc = false;
 }
@@ -552,7 +551,6 @@ function updateGeo() {
         errorLabelTitle.textContent = "Невозможно получить данные о геолокации.";
         geoDialog.close();
         addCity();
-        console.log("geolocation does not exist");
     }
 }
 
@@ -819,7 +817,6 @@ function renderCities(cities) {
 }
 
 function selectCountry(countryId) {
-    console.log(countryId);
     if (countryId == -1) return;
     
     const country = dropbox_countries.find(c => c.id == countryId);
@@ -1091,7 +1088,6 @@ function updateHourBlock(blockIndex, hourIndex, updateData) {
     const dataIndex = globalThis.currentDay * HOURS_IN_DAY + hourIndex;
     const dailyTime = updateData.hourly.time[dataIndex];
     
-    console.log(updateData.hourly);
     hourLabel.textContent = `${dailyTime.getHours()}:${dailyTime.getMinutes().toString().padStart(2, "0")}`;
     hourImage.src = `signs/${updateData.hourly.weathercode[dataIndex]}.jpg`;
     hourDegrees.textContent = `${updateData.hourly.temperature_2m[dataIndex]}°`;
