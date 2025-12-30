@@ -568,6 +568,7 @@ function setupCityDialogEvents() {
     
     inputCity.addEventListener('focus', () => {
         delay();
+        if (inputCity.value == "Такого города не существует") inputCity.value = "";
         filterCities(inputCity.value);
     });
     
@@ -608,6 +609,9 @@ function handleApproveCity() {
         );
         
         cityDialog.close();
+    }
+    if (!selectedCity){
+        inputCity.value = "Такого города не существует";
     }
 }
 
@@ -1238,4 +1242,5 @@ function initApp() {
 // ==================== ЗАПУСК ПРИЛОЖЕНИЯ ====================
 
 initApp();
+
 
