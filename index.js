@@ -740,7 +740,7 @@ function filterCountries(searchTerm) {
     const isExactMatch = dropbox_countries.find(country => 
         searchTerm == country.name
     );
-    console.log(isExactMatch, searchTerm, selectedCountry);
+    console.log(searchTerm, isExactMatch, !isExactMatch);
     
     if (!isExactMatch) {
         selectedCountry = null;
@@ -758,9 +758,10 @@ function filterCountries(searchTerm) {
 }
 
 function filterCities(searchTerm) {
-    const isExactMatch = dropbox_cities.filter(city => 
+    const isExactMatch = dropbox_cities.find(city => 
         searchTerm == city.name
     );
+    console.log(searchTerm, isExactMatch, !isExactMatch);
     
     if (!isExactMatch) {
         selectedCity = null;
@@ -1358,6 +1359,5 @@ function initApp() {
 }
 
 // ==================== ЗАПУСК ПРИЛОЖЕНИЯ ====================
-
 
 initApp();
