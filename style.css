@@ -1,0 +1,1358 @@
+.body{
+    background: linear-gradient(180deg, rgba(26, 41, 128, 0.05) 0%, transparent 100%);
+}
+
+/* ========== СТИЛИ ДЛЯ ОКНА ДОБАВЛЕНИЯ ГОРОДА (cityDialog) ========== */
+
+.cityDialog {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-color: rgba(255, 255, 255, 0);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.container {
+    animation: modalAppear 0.4s ease-out;
+}
+
+.inputCountry:focus,
+.inputCity:focus {
+    animation: pulse 1.5s infinite;
+}
+
+.filterBlock.active {
+    position: relative;
+}
+
+.filterBlock.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00f2fe, transparent);
+    animation: glow 2s infinite;
+}
+
+.filterBlock {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.listCountry,
+.listCity {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    max-height: 250px;
+    overflow-y: auto;
+    background: rgba(26, 41, 128, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    z-index: 1001;
+    display: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    animation: dropdownAppear 0.3s ease-out;
+    transform-origin: top center;
+}
+
+.listCountry::-webkit-scrollbar,
+.listCity::-webkit-scrollbar {
+    width: 6px;
+}
+
+.listCountry::-webkit-scrollbar-track,
+.listCity::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    margin: 5px 0;
+}
+
+.listCountry::-webkit-scrollbar-thumb,
+.listCity::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #4facfe, #00f2fe);
+    border-radius: 3px;
+}
+
+.listCountry::-webkit-scrollbar-thumb:hover,
+.listCity::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #00f2fe, #4facfe);
+}
+
+.dropdownItem {
+    padding: 14px 20px;
+    cursor: pointer;
+    color: white;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.dropdownItem:last-child {
+    border-bottom: none;
+}
+
+.dropdownItem:hover {
+    background: rgba(79, 172, 254, 0.25);
+    padding-left: 25px;
+    transform: translateX(2px);
+}
+
+.dropdownItem.active {
+    background: linear-gradient(90deg, rgba(79, 172, 254, 0.4), rgba(0, 242, 254, 0.4));
+    border-left: 4px solid #00f2fe;
+    font-weight: 600;
+    box-shadow: inset 0 0 20px rgba(0, 242, 254, 0.2);
+}
+
+.dropdownItem.active::before {
+    content: '✓';
+    position: absolute;
+    right: 20px;
+    font-weight: bold;
+    color: #00f2fe;
+    animation: checkmark 0.3s ease;
+}
+
+.dropdownItem {
+    animation: itemAppear 0.4s ease-out forwards;
+    opacity: 0;
+    transform: translateY(5px);
+}
+
+.listCountry:empty::after,
+.listCity:empty::after {
+    content: 'Ничего не найдено';
+    display: block;
+    padding: 20px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+}
+
+.filterBlock:focus-within .listCountry,
+.filterBlock:focus-within .listCity {
+    border-color: rgba(0, 242, 254, 0.5);
+    box-shadow: 0 10px 30px rgba(0, 242, 254, 0.2), 0 0 0 1px rgba(0, 242, 254, 0.3);
+}
+
+.container {
+    background: linear-gradient(135deg, #1a2980, #26d0ce);
+    border-radius: 20px;
+    padding: 40px;
+    width: (90vw - 40px);
+    margin-top: (10vh);
+    margin-left: max(50vw - 290px, 50vw - 45vw + 20px);
+    max-width: 500px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    transform: translateY(30px);
+    transition: transform 0.4s ease;
+    color: white;
+    position: relative;
+    overflow: visible;
+}
+
+.dTitle {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dDescription {
+    font-size: 1rem;
+    opacity: 0.9;
+    font-weight: 300;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.inputCountry,
+.inputCity {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.inputCountry:focus,
+.inputCity:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.inputCountry::placeholder,
+.inputCity::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.dButtons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.approveButton,
+.cancelButton {
+    flex: 1;
+    padding: 16px 24px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.approveButton {
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    color: white;
+}
+
+.approveButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3);
+}
+
+.cancelButton {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.cancelButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* ========== СТИЛИ ДЛЯ ЛЕНТЫ ГОРОДОВ (cityLine) ========== */
+
+.cityLine {
+    display: flex;
+    align-items: flex-start;
+    padding: 0 20px;
+    margin: 20px 0 0 0;
+    gap: 8px;
+    min-height: 60px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #4facfe rgba(26, 41, 128, 0.1);
+    background: linear-gradient(180deg, rgba(26, 41, 128, 0.05) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.cityLine::-webkit-scrollbar{
+    height: 6px;
+}
+
+.cityLine::-webkit-scrollbar-track{
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    margin: 0px;
+}
+
+.cityLine::-webkit-scrollbar-thumb{
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
+    border-radius: 3px;
+}
+
+/* Стили для вкладок-городов */
+.cityBlock {
+    position: relative;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px 12px 0 0;
+    padding: 12px 40px 12px 16px;
+    min-width: 140px;
+    max-width: 200px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: none;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    flex-shrink: 0;
+    margin-top: 10px;
+}
+
+/* Эффект при наведении на вкладку */
+.cityBlock:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(79, 172, 254, 0.3);
+}
+
+/* Активная вкладка */
+.cityBlock.chosenCity {
+    background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    padding-bottom: 16px;
+    margin-bottom: -4px;
+    z-index: 10;
+    box-shadow: 0 0 20px rgba(79, 172, 254, 0.4);
+    border-color: rgba(255, 255, 255, 0.4);
+    animation: activeTabPulse 2s infinite;
+}
+
+/* Текст вкладки */
+.cityLabel {
+    font-size: 0.95rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Активный текст */
+.chosenCity .cityLabel {
+    font-weight: 600;
+    color: white;
+}
+
+/* Кнопка закрытия вкладки */
+.cityCloseButton {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.4);
+    color: rgb(0, 0, 0);
+    font-size: 0.7rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+    line-height: 1;
+    opacity: 0.7;
+}
+
+.cityCloseButton:hover {
+    background: rgba(255, 99, 99, 0.9);
+    transform: translateY(-50%) scale(1.1);
+    opacity: 1;
+}
+
+/* Первая вкладка (геолокация) */
+.cityBlock:nth-child(2) {
+    background: linear-gradient(180deg, rgba(152, 169, 248, 0.8) 0%, rgba(102, 126, 234, 0.8) 100%);
+}
+
+.cityBlock:nth-child(2).chosenCity {
+    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Кнопка добавления города */
+.addCityButton {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: rgb(100, 100, 100);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0 0 5px;
+    flex-shrink: 0;
+    backdrop-filter: blur(5px);
+}
+
+.addCityButton:hover {
+    background: rgba(79, 172, 254, 0.3);
+    border-color: #00f2fe;
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+}
+
+/* Кнопка обновления данных */
+.reloadButton {
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
+    border: none;
+    border-radius: 20px;
+    padding: 10px 14px;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 10px 0 0 0;
+    white-space: nowrap;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+}
+
+.reloadButton::before {
+    content: '↻';
+    font-size: 1.1rem;
+}
+
+.reloadButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);
+}
+
+.reloadButton:active {
+    transform: scale(0.95);
+}
+
+/* ========== СТИЛИ ДЛЯ ЛЕНТЫ ДНЕЙ (dayLine) ========== */
+
+.dayLine {
+    display: flex;
+    gap: 15px;
+    padding: 20px;
+    margin: 20px 20px 10px 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #4facfe rgba(26, 41, 128, 0.1);
+    min-height: 300px;
+    
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    box-shadow: 0 10px 40px rgba(26, 41, 128, 0.15);
+    border: 2px solid rgba(79, 172, 254, 0.2);
+    position: relative;
+    backdrop-filter: blur(10px);
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.dayLine::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+    background: transparent;
+}
+
+/* Стили для блока дня */
+.dayBlock {
+    flex: 0 0 auto;
+    width: 220px;
+    background: rgba(75, 255, 237, 0.493);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.dayBlock:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    border-color: rgba(79, 172, 254, 0.4);
+}
+
+/* Активный (выбранный) день */
+.dayBlock.chosenDay {
+    background: linear-gradient(135deg, rgba(79, 172, 254, 0.25), rgba(0, 241, 254, 0.452));
+    border-color: #00f2ff;
+    box-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
+    transform: scale(1.02);
+}
+
+/* Заголовок дня */
+.dayLabel {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: rgb(0, 0, 0);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 10px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    line-height: 1.4;
+}
+
+/* Полоска времени суток */
+.dayTime{
+    flex-direction: row;
+    gap: 10px;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: rgb(232, 242, 241);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+/* Лейбл времени суток */
+.daytimeLabel {
+    flex: 1;
+    font-size: 1.8rem;
+    color: rgb(0, 0, 0);
+    font-weight: 500;
+    min-width: 70px;
+}
+
+/* Изображение погоды */
+.daytimeImage {
+    width: 36px;
+    height: 36px;
+    border-width: 0px;
+    object-fit: contain;
+    /* filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3)); */
+    background: rgb(232, 242, 241);
+    transition: transform 0.3s ease;
+}
+
+.daytimeItem:hover .daytimeImage {
+    transform: scale(1.1);
+}
+
+/* Температура */
+.daytimeTemp {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: white;
+    min-width: 50px;
+    text-align: right;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Индикатор текущего дня */
+.dayBlock:first-child::before {
+    content: 'Сегодня';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 1;
+}
+
+/* Эффект градиентной рамки при наведении */
+.dayBlock::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #4facfe, #00f2fe, #4facfe);
+    border-radius: 22px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.dayBlock:hover::after {
+    opacity: 0.3;
+}
+
+/* Плавное появление блоков */
+.dayBlock {
+    animation: blockAppear 0.5s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* Задержка анимации для каждого блока */
+.dayBlock:nth-child(1) { animation-delay: 0.1s; }
+.dayBlock:nth-child(2) { animation-delay: 0.2s; }
+.dayBlock:nth-child(3) { animation-delay: 0.3s; }
+.dayBlock:nth-child(4) { animation-delay: 0.4s; }
+.dayBlock:nth-child(5) { animation-delay: 0.5s; }
+.dayBlock:nth-child(6) { animation-delay: 0.6s; }
+.dayBlock:nth-child(7) { animation-delay: 0.7s; }
+
+/* ========== СТИЛИ ДЛЯ ЧАСОВОЙ ЛЕНТЫ (hourLine) ========== */
+
+.hourLine {
+    display: flex;
+    gap: 15px;
+    padding: 25px 20px;
+    margin: 0 20px 20px 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    min-height: 220px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 25px;
+    box-shadow: 0 10px 40px rgba(26, 41, 128, 0.15);
+    border: 2px solid rgba(79, 172, 254, 0.2);
+    position: relative;
+    backdrop-filter: blur(10px);
+}
+
+.hourLine::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+    background: transparent;
+}
+
+/* Блок часа */
+.hourBlock {
+    flex: 0 0 auto;
+    width: 120px;
+    height: 170px;
+    background: linear-gradient(180deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.05) 100%);
+    border-radius: 20px;
+    padding: 18px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(79, 172, 254, 0.15);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+}
+
+.hourBlock:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(79, 172, 254, 0.2);
+    border-color: rgba(79, 172, 254, 0.4);
+    background: linear-gradient(180deg, rgba(79, 172, 254, 0.15) 0%, rgba(0, 242, 254, 0.1) 100%);
+}
+
+.hourBlock.special:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(255, 217, 1, 0.2);
+    border-color: rgba(254, 207, 79, 0.4);
+    background: linear-gradient(180deg, rgba(254, 193, 79, 0.4) 0%, rgba(254, 174, 0, 0.3) 100%);
+}
+
+/* Время (верхняя полоса) */
+.hourLabel {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a2980;
+    text-align: center;
+    padding: 0 10px;
+    width: 100%;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.5px;
+}
+
+/* Картинка погоды (средняя полоса) */
+.hourImage {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    border-radius: 12px;
+    background: rgb(232, 242, 241);
+    padding: 8px;
+}
+
+.hourBlock:hover .hourImage {
+    transform: scale(1.1);
+    filter: drop-shadow(0 6px 8px rgba(79, 172, 254, 0.3));
+}
+
+.hourBlock.special:hover .hourImage {
+    transform: scale(1.1);
+    filter: drop-shadow(0 6px 8px rgba(255, 159, 33, 0.5));
+}
+
+/* Температура (нижняя полоса) */
+.hourDegrees {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1a2980;
+    text-align: center;
+    width: 100%;
+    padding: 0 10px;
+    text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+    background: linear-gradient(90deg, #1a2980, #26d0ce);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Особые стили для восхода и заката */
+.hourBlock.special{
+    background: linear-gradient(180deg, rgba(254, 193, 79, 0.4) 0%, rgba(254, 174, 0, 0.3) 100%);
+}
+
+.hourBlock.special .hourDegrees {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Анимация появления */
+.hourBlock {
+    animation: hourBlockAppear 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* Задержка анимации для каждого блока */
+.hourBlock:nth-child(1) { animation-delay: 0.1s; }
+.hourBlock:nth-child(2) { animation-delay: 0.15s; }
+.hourBlock:nth-child(3) { animation-delay: 0.2s; }
+.hourBlock:nth-child(4) { animation-delay: 0.25s; }
+.hourBlock:nth-child(5) { animation-delay: 0.3s; }
+.hourBlock:nth-child(6) { animation-delay: 0.35s; }
+.hourBlock:nth-child(7) { animation-delay: 0.4s; }
+.hourBlock:nth-child(8) { animation-delay: 0.45s; }
+.hourBlock:nth-child(9) { animation-delay: 0.5s; }
+.hourBlock:nth-child(10) { animation-delay: 0.55s; }
+.hourBlock:nth-child(11) { animation-delay: 0.6s; }
+.hourBlock:nth-child(12) { animation-delay: 0.65s; }
+.hourBlock:nth-child(13) { animation-delay: 0.7s; }
+.hourBlock:nth-child(14) { animation-delay: 0.75s; }
+.hourBlock:nth-child(15) { animation-delay: 0.8s; }
+.hourBlock:nth-child(16) { animation-delay: 0.85s; }
+.hourBlock:nth-child(17) { animation-delay: 0.9s; }
+.hourBlock:nth-child(18) { animation-delay: 0.95s; }
+.hourBlock:nth-child(19) { animation-delay: 1s; }
+.hourBlock:nth-child(20) { animation-delay: 1.05s; }
+.hourBlock:nth-child(21) { animation-delay: 1.1s; }
+.hourBlock:nth-child(22) { animation-delay: 1.15s; }
+.hourBlock:nth-child(23) { animation-delay: 1.2s; }
+.hourBlock:nth-child(24) { animation-delay: 1.25s; }
+.hourBlock:nth-child(25) { animation-delay: 1.3s; }
+.hourBlock:nth-child(26) { animation-delay: 1.35s; }
+
+.hourBlock::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #4facfe, #00f2fe, #4facfe);
+    border-radius: 22px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* ========== СТИЛИ ДЛЯ ОКНА С ЗАПРОСОМ ГЕО (geoDialog) ========== */
+
+.geoDialog {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    border: none;
+    border-radius: 0;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    backdrop-filter: blur(8px); 
+    animation: geoDialogAppear 0.4s ease-out;
+}
+
+.geoDialog::backdrop {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+}
+
+.geoDialogContent {
+    position: relative;
+    background: linear-gradient(135deg, rgba(26, 41, 128, 0.9), rgba(38, 208, 206, 0.9));
+    border-radius: 30px;
+    padding: 50px 60px;
+    text-align: center;
+    color: white;
+    margin-top: (10vh);
+    margin-left: max(50vw - 225px, 50vw - 48vw);
+    max-width: 400px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(79, 172, 254, 0.5);
+    animation: geoContentPulse 2s infinite ease-in-out;
+}
+
+.geoDialogTitle {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(90deg, #ffffff, #e0f7ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.geoDialogText {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    opacity: 0.9;
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+/* ========== СТИЛИ ДЛЯ СООБЩЕНИЙ ОБ ОШИБКАХ (errorLabel) ========== */
+
+.errorLabel {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.95), rgba(255, 159, 67, 0.95));
+    border-radius: 20px;
+    padding: 30px 40px;
+    margin: 30px 20px;
+    color: white;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.6;
+    box-shadow: 0 10px 40px rgba(255, 107, 107, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    animation: errorAppear 0.5s ease-out;
+    overflow: hidden;
+    z-index: 100;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 3;
+    max-width: 800px;
+}
+
+.errorLabelTitle {
+    font-size: 3.4rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ========== АДАПТИВНОСТЬ ========== */
+
+/* Адаптивность для устройств со средним экраном*/
+@media (max-width: 1024px) {
+    .dayBlock {
+        width: 200px;
+        padding: 18px;
+    }
+    
+    .dayLabel {
+        font-size: 1.2rem;
+    }
+    
+    .daytimeLabel {
+        font-size: 0.95rem;
+    }
+    
+    .daytimeTemp {
+        font-size: 1.3rem;
+    }
+
+    .hourBlock {
+        width: 110px;
+        height: 160px;
+    }
+    
+    .hourImage {
+        width: 65px;
+        height: 65px;
+    }
+    
+    .hourDegrees {
+        font-size: 1.7rem;
+    }
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .listCountry,
+    .listCity {
+        max-height: 200px;
+        border-radius: 10px;
+        top: calc(100% + 3px);
+    }
+    
+    .dropdownItem {
+        padding: 12px 16px;
+        font-size: 0.95rem;
+    }
+    
+    .dropdownItem:hover {
+        padding-left: 20px;
+    }
+
+    .container {
+        padding: 30px 25px;
+        border-radius: 15px;
+        margin: 20px;
+        width: (90%);
+    }
+    
+    .dTitle {
+        font-size: 1.7rem;
+    }
+    
+    .dButtons {
+        flex-direction: column;
+    }
+    
+    .inputCountry,
+    .inputCity {
+        padding: 14px 18px;
+    }
+
+    .approveButton,
+    .cancelButton {
+        padding: 14px 20px;
+    }
+
+    .dayLine {
+        gap: 12px;
+        padding: 15px;
+        margin: 15px 15px 10px 15px;
+    }
+    
+    .dayBlock {
+        width: 180px;
+        padding: 16px;
+        gap: 10px;
+    }
+    
+    .dayLabel {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+        padding-bottom: 10px;
+    }
+    
+    .daytimeItem {
+        padding: 8px 12px;
+        gap: 10px;
+    }
+    
+    .daytimeLabel {
+        font-size: 0.9rem;
+        min-width: 60px;
+    }
+    
+    .daytimeImage {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .daytimeTemp {
+        font-size: 1.2rem;
+        min-width: 45px;
+    }
+
+    .cityLine {
+        padding: 0 10px;
+        gap: 5px;
+    }
+    
+    .cityBlock {
+        min-width: 120px;
+        max-width: 160px;
+        padding: 10px 35px 10px 12px;
+    }
+    
+    .cityLabel {
+        font-size: 0.85rem;
+    }
+    
+    .cityCloseButton {
+        width: 16px;
+        height: 16px;
+        right: 8px;
+        font-size: 0.6rem;
+    }
+    
+    .addCityButton {
+        width: 36px;
+        height: 36px;
+        font-size: 1.3rem;
+    }
+    
+    .reloadButton {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        margin-left: 5px;
+    }
+    
+    .reloadButton::before {
+        font-size: 1rem;
+    }
+
+    .hourLine {
+        padding: 20px 15px;
+        margin: 0 15px 15px 15px;
+        gap: 12px;
+        min-height: 200px;
+    }
+    
+    .hourBlock {
+        width: 100px;
+        height: 150px;
+        padding: 15px 0;
+        border-radius: 18px;
+    }
+    
+    .hourLabel {
+        font-size: 1rem;
+    }
+    
+    .hourImage {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .hourDegrees {
+        font-size: 1.6rem;
+    }
+    
+    .geoDialogContent {
+        padding: 40px 30px;
+        max-width: 300px;
+    }
+    
+    .geoDialogTitle {
+        font-size: 1.5rem;
+    }
+    
+    .geoDialogText {
+        font-size: 1rem;
+    }
+    
+    .geoDialog::before {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .geoDialog::after {
+        width: 60px;
+        height: 60px;
+    }
+
+    .errorLabel {
+        padding: 25px 30px;
+        margin: 25px 15px;
+        font-size: 1.1rem;
+        min-height: 110px;
+    }
+    
+    .errorLabelTitle {
+        font-size: 1.3rem;
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 480px) {
+    .dayLine {
+        gap: 10px;
+        padding: 12px 10px;
+        margin: 12px 10px 8px 10px;
+    }
+    
+    .dayBlock {
+        width: 160px;
+        padding: 14px 12px;
+        gap: 8px;
+    }
+    
+    .dayLabel {
+        font-size: 1rem;
+        margin-bottom: 6px;
+        padding-bottom: 8px;
+    }
+    
+    .daytimeItem {
+        padding: 7px 10px;
+        gap: 8px;
+    }
+    
+    .daytimeLabel {
+        font-size: 0.85rem;
+        min-width: 55px;
+    }
+    
+    .daytimeImage {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .daytimeTemp {
+        font-size: 1.1rem;
+        min-width: 40px;
+    }
+    
+    .dayBlock:first-child::before {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+        top: -8px;
+    }
+
+    .cityLine {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        /* padding-bottom: 5px; */
+    }
+    
+    .cityBlock {
+        min-width: 110px;
+        padding: 8px 30px 8px 10px;
+    }
+    
+    .reloadButton {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        padding: 0;
+        justify-content: center;
+    }
+    
+    .reloadButton span {
+        display: none;
+    }
+    
+    .reloadButton::before {
+        font-size: 1.3rem;
+        margin: 0;
+    }
+    
+    .hourLine {
+        padding: 15px 10px;
+        margin: 0 10px 10px 10px;
+        gap: 10px;
+        min-height: 180px;
+        border-radius: 20px;
+    }
+    
+    .hourBlock {
+        width: 90px;
+        height: 140px;
+        padding: 12px 0;
+        border-radius: 16px;
+    }
+    
+    .hourLabel {
+        font-size: 0.95rem;
+        padding: 0 5px;
+    }
+    
+    .hourImage {
+        width: 55px;
+        height: 55px;
+        padding: 6px;
+    }
+    
+    .hourDegrees {
+        font-size: 1.5rem;
+        padding: 0 5px;
+    }
+
+    .geoDialogContent {
+        padding: 30px 20px;
+        max-width: 250px;
+    }
+    
+    .geoDialogTitle {
+        font-size: 1.3rem;
+    }
+    
+    .geoDialogText {
+        font-size: 0.95rem;
+    }
+    
+    .geoDialog::before {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .geoDialog::after {
+        width: 50px;
+        height: 50px;
+    }
+
+    .errorLabel {
+        padding: 20px 25px;
+        margin: 20px 10px;
+        font-size: 1rem;
+        min-height: 100px;
+        border-radius: 15px;
+    }
+    
+    .errorLabelTitle {
+        font-size: 1.2rem;
+    }
+}
+
+/* ========== АНИМАЦИИ ========== */
+@keyframes dayPulse {
+    0%, 100% {
+        box-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(0, 242, 254, 0.5);
+    }
+}
+
+@keyframes blockAppear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes hourBlockAppear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes geoDialogAppear {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0);
+    }
+    to {
+        opacity: 1;
+        backdrop-filter: blur(8px);
+    }
+}
+
+@keyframes geoContentPulse {
+    0%, 100% {
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+    50% {
+        box-shadow: 0 20px 70px rgba(79, 172, 254, 0.4);
+    }
+}
+
+@keyframes errorAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.1); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+@keyframes activeTabPulse {
+    0%, 100% { 
+        box-shadow: 0 0 20px rgba(79, 172, 254, 0.4); 
+    }
+    50% { 
+        box-shadow: 0 0 25px rgba(79, 172, 254, 0.6); 
+    }
+}
+
+@keyframes loadingLine {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes dropdownAppear {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes checkmark {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes itemAppear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Стиль для скрытого состояния */
+.cityBlock[hidden],
+.errorLabel[hidden],
+.addCityButton[hidden],
+.dayLine[hidden],
+.dayBlock[hidden],
+.hourLine[hidden] {
+    display: none !important;
+}
