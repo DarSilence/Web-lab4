@@ -547,7 +547,6 @@ function updateGeo() {
 
         navigator.geolocation.getCurrentPosition(success, error, {
             enableHighAccuracy: true,
-            timeout: 5000,
         });
     } else {
         errorLabelTitle.textContent = "Невозможно получить данные о геолокации.";
@@ -1361,3 +1360,4 @@ function initApp() {
 // ==================== ЗАПУСК ПРИЛОЖЕНИЯ ====================
 
 initApp();
+
