@@ -207,6 +207,21 @@
     color: rgba(255, 255, 255, 0.6);
 }
 
+.errorBlock{
+    min-height: 30px;
+    background: rgba(255, 0, 0, 0.37);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    text-align: center;
+    padding: 6px;
+}
+
+.inputError{
+    width: 100%;
+    color: white;
+    font-size: 1.4rem;
+}
+
 .dButtons {
     display: flex;
     gap: 15px;
@@ -939,7 +954,8 @@
     }
     
     .inputCountry,
-    .inputCity {
+    .inputCity,
+    .inputError {
         padding: 14px 18px;
     }
 
