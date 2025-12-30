@@ -471,12 +471,12 @@ function getWeather(lat, long, index, cur_city) {
             })
             .catch(error => {
                 console.error('Ошибка при получении данных:', error);
-                errors[index] = false;
+                errors[index] = true;
                 updateBlocks();
             });
     } catch (error) {
         console.error('Ошибка при получении данных:', error);
-        errors[index] = false;
+        errors[index] = true;
         updateBlocks();
     }
 }
@@ -740,7 +740,6 @@ function filterCountries(searchTerm) {
     const isExactMatch = dropbox_countries.find(country => 
         searchTerm == country.name
     );
-    console.log(searchTerm, isExactMatch, !isExactMatch);
     
     if (!isExactMatch) {
         selectedCountry = null;
@@ -761,7 +760,6 @@ function filterCities(searchTerm) {
     const isExactMatch = dropbox_cities.find(city => 
         searchTerm == city.name
     );
-    console.log(searchTerm, isExactMatch, !isExactMatch);
     
     if (!isExactMatch) {
         selectedCity = null;
@@ -939,6 +937,8 @@ function removeCity(index) {
     delete globalThis.processedData[globalThis.cities[cityIndex]];
     
     // Удаляем город из массива
+    readyness.splice(cityIndex, 1);
+    readyness.push(false);
     globalThis.cities.splice(cityIndex, 1);
     
     // Обновляем текущий выбранный прогноз
@@ -1167,7 +1167,7 @@ function initCities() {
         if (!in_process) {
             delay();
             const sup = globalThis.geoloc ? 1 : 0;
-            for (let index = 1 - sup; index < sup + globalThis.cities.length; index++) {
+            for (let index = 1 - sup; index < 1 + globalThis.cities.length; index++) {
                 readyness[index] = false;
                 errors[index] = false;
                 if (index == 0) {
@@ -1343,7 +1343,7 @@ function initApp() {
         updateGeo();
     } else {
         const sup = globalThis.geoloc ? 1 : 0;
-        for (let index = 1 - sup; index < globalThis.cities.length + sup; index++) {
+        for (let index = 1 - sup; index < globalThis.cities.length + 1; index++) {
             if (index == 0) {
                 getWeather(globalThis.glatitude, globalThis.glongitude, index, "geoloc");
             } else {
