@@ -444,7 +444,7 @@ function getMostCommonWeather(weatherCodes) {
 }
 
 function updateReadyness(currentF) {
-    const hasReadyData = readyness.some(elem => elem === true);
+    const hasReadyData = readyness.some(elem => elem == true);
     readyness[currentF] = true;
     
     if (!hasReadyData) {
@@ -511,7 +511,7 @@ function success({ coords }) {
 }
 
 function error({ message }) {
-    if (message === "Timeout expired") {
+    if (message == "Timeout expired") {
         errorLabelTitle.textContent = "Определение геопозиции...";
         getGeolocation();
         geoDialog.close();
@@ -529,10 +529,10 @@ function error({ message }) {
 }
 
 function handleGeolocationError() {
-    if (globalThis.cities.length === 0) {
+    if (globalThis.cities.length == 0) {
         addCity();
     } else {
-        if (globalThis.currentForecast === 0 || globalThis.currentForecast >= globalThis.cities.length) {
+        if (globalThis.currentForecast == 0 || globalThis.currentForecast >= globalThis.cities.length) {
             globalThis.currentForecast = 1;
         }
         updateAllCitiesWeather();
@@ -738,13 +738,16 @@ function handleCancelCity() {
 // ==================== ФИЛЬТРАЦИЯ И ВЫБОР ====================
 
 function filterCountries(searchTerm) {
-    const isExactMatch = dropbox_countries.some(country => 
-        selectedCountry !== null && searchTerm === country.name
+    const isExactMatch = dropbox_countries.find(country => 
+        searchTerm == country.name
     );
+    console.log(isExactMatch, searchTerm, selectedCountry);
     
     if (!isExactMatch) {
         selectedCountry = null;
         filterCities("");
+    } else {
+        selectedCountry = searchTerm;
     }
 
     const filtered = dropbox_countries.filter(country => 
@@ -756,25 +759,27 @@ function filterCountries(searchTerm) {
 }
 
 function filterCities(searchTerm) {
-    const isExactMatch = dropbox_cities.some(city => 
-        selectedCity !== null && searchTerm === city.name
+    const isExactMatch = dropbox_cities.filter(city => 
+        searchTerm == city.name
     );
     
     if (!isExactMatch) {
         selectedCity = null;
+    } else {
+        selectedCity = searchTerm;
     }
 
     let filtered;
     if (selectedCountry) {
         filtered = dropbox_cities.filter(city => 
-            city.country === selectedCountry &&
+            city.country == selectedCountry &&
             city.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-            globalThis.cities.indexOf(city.name) === -1
+            globalThis.cities.indexOf(city.name) == -1
         );
     } else {
         filtered = dropbox_cities.filter(city => 
             city.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-            globalThis.cities.indexOf(city.name) === -1
+            globalThis.cities.indexOf(city.name) == -1
         );
     }
 
@@ -785,7 +790,7 @@ function filterCities(searchTerm) {
 function renderCountries(countries) {
     listCountry.textContent = "";
 
-    if (countries.length === 0) {
+    if (countries.length == 0) {
         const dropdownItem = document.createElement("div");
         dropdownItem.classList.add("dropdownItem");
         dropdownItem.textContent = "Нет стран";
@@ -800,7 +805,7 @@ function renderCountries(countries) {
         item.textContent = country.name;
         item.dataset.id = country.id;
 
-        if (country.id === selectedCountry) {
+        if (country.id == selectedCountry) {
             item.classList.add("active");
         }
 
@@ -811,7 +816,7 @@ function renderCountries(countries) {
 function renderCities(cities) {
     listCity.textContent = "";
 
-    if (cities.length === 0) {
+    if (cities.length == 0) {
         const dropdownItem = document.createElement("div");
         dropdownItem.classList.add("dropdownItem");
         dropdownItem.textContent = "Нет городов";
@@ -826,7 +831,7 @@ function renderCities(cities) {
         item.textContent = city.name;
         item.dataset.id = city.id;
 
-        if (city.id === selectedCity) {
+        if (city.id == selectedCity) {
             item.classList.add("active");
         }
 
@@ -918,6 +923,7 @@ function createCloseButton(index) {
         if (!in_process) {
             delay();
             removeCity(index);
+            updateBlocks();
         }
     });
 
@@ -948,7 +954,7 @@ function removeCity(index) {
     saveInfo();
     
     // Если нет городов и нет геолокации - показываем диалог добавления
-    if (globalThis.cities.length === 0 && !globalThis.geoloc) {
+    if (globalThis.cities.length == 0 && !globalThis.geoloc) {
         addCity();
     }
 }
@@ -973,7 +979,7 @@ function updateCities() {
         
         if (!cityBlock || !cityLabel) continue;
         
-        if (index === globalThis.currentForecast) {
+        if (index == globalThis.currentForecast) {
             cityBlock.classList.add("chosenCity");
         } else {
             cityBlock.classList.remove("chosenCity");
@@ -981,7 +987,7 @@ function updateCities() {
 
         if (index <= globalThis.cities.length) {
             cityBlock.hidden = false;
-            cityLabel.textContent = index === 0 ? "Текущее местоположение" : globalThis.cities[index - 1];
+            cityLabel.textContent = index == 0 ? "Текущее местоположение" : globalThis.cities[index - 1];
         } else {
             cityBlock.hidden = true;
         }
@@ -997,7 +1003,7 @@ function updateCities() {
 
 function updateDays() {
     const shouldHideDayLine = 
-        (globalThis.currentForecast === 0 && !globalThis.geoloc && !findingGeo) ||
+        (globalThis.currentForecast == 0 && !globalThis.geoloc && !findingGeo) ||
         !readyness[globalThis.currentForecast] ||
         errors[globalThis.currentForecast];
     
@@ -1005,7 +1011,7 @@ function updateDays() {
         dayLine.hidden = true;
         errorLabel.hidden = false;
         
-        if (globalThis.currentForecast === 0 && !globalThis.geoloc && !findingGeo) {
+        if (globalThis.currentForecast == 0 && !globalThis.geoloc && !findingGeo) {
             errorLabelTitle.textContent = "Невозможно получить данные о геолокации.";
         } else if (!readyness[globalThis.currentForecast]) {
             errorLabelTitle.textContent = "Обновление данных...";
@@ -1058,7 +1064,7 @@ function updateDaytimeBlock(dayIndex, partIndex, updateData) {
 
 function updateHours() {
     const shouldHideHourLine = 
-        (globalThis.currentForecast === 0 && !globalThis.geoloc && !findingGeo) ||
+        (globalThis.currentForecast == 0 && !globalThis.geoloc && !findingGeo) ||
         !readyness[globalThis.currentForecast] ||
         errors[globalThis.currentForecast];
     
@@ -1069,7 +1075,7 @@ function updateHours() {
     
     hourLine.hidden = false;
     
-    const cityKey = globalThis.currentForecast === 0 ? "geoloc" : globalThis.cities[globalThis.currentForecast - 1];
+    const cityKey = globalThis.currentForecast == 0 ? "geoloc" : globalThis.cities[globalThis.currentForecast - 1];
     const updateData = globalThis.processedData[cityKey];
     
     if (!updateData) return;
@@ -1081,12 +1087,12 @@ function updateHours() {
     for (let hourIndex = 0; hourIndex < HOURS_IN_DAY; hourIndex++) {
         updateHourBlock(hourIndex + supIndex, hourIndex, updateData);
         
-        if (hourIndex === sunset.getHours()) {
+        if (hourIndex == sunset.getHours()) {
             supIndex++;
             updateSpecialHourBlock(hourIndex + supIndex, sunset, "sunset");
         }
         
-        if (hourIndex === sunrise.getHours()) {
+        if (hourIndex == sunrise.getHours()) {
             supIndex++;
             updateSpecialHourBlock(hourIndex + supIndex, sunrise, "sunrise");
         }
@@ -1122,7 +1128,7 @@ function updateSpecialHourBlock(blockIndex, time, type) {
     hourBlock.classList.add("special");
     hourLabel.textContent = `${time.getHours()}:${time.getMinutes().toString().padStart(2, "0")}`;
     hourImage.src = `signs/${type}.jpg`;
-    hourDegrees.textContent = type === "sunrise" ? "Восход" : "Закат";
+    hourDegrees.textContent = type == "sunrise" ? "Восход" : "Закат";
 }
 
 function updateBlocks() {
@@ -1164,7 +1170,7 @@ function initCities() {
             for (let index = 1 - sup; index < sup + globalThis.cities.length; index++) {
                 readyness[index] = false;
                 errors[index] = false;
-                if (index === 0) {
+                if (index == 0) {
                     getWeather(globalThis.glatitude, globalThis.glongitude, index, "geoloc");
                 } else {
                     getWeather(
@@ -1212,7 +1218,7 @@ function initDays() {
         dayBlock.classList.add("dayBlock");
         dayBlock.id = `dayBlock${dayIndex}`;
         
-        if (globalThis.currentDay === dayIndex) {
+        if (globalThis.currentDay == dayIndex) {
             dayBlock.classList.add("chosenDay");
         }
         
@@ -1338,7 +1344,7 @@ function initApp() {
     } else {
         const sup = globalThis.geoloc ? 1 : 0;
         for (let index = 1 - sup; index < globalThis.cities.length + sup; index++) {
-            if (index === 0) {
+            if (index == 0) {
                 getWeather(globalThis.glatitude, globalThis.glongitude, index, "geoloc");
             } else {
                 getWeather(
